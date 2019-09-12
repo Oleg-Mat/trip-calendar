@@ -8,6 +8,7 @@ const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const serializeUser = require('./routes/serealize.js');
 const deserializeUser = require('./routes/deserialize.js');
+const afterGoogleAth = require('././routes/goggleStrategy');
 
 const app = express();
 const db = require('mongoose');
@@ -52,22 +53,14 @@ passport.use(
       realm: 'http://localhost:3000',
       scope: ['profile'],
     },
-    (accessToken, refreshToken, profile, done) => {
-      User.findOrCreate({ googleId: profile.id }, (err, user) => done(err, user));
-    },
+    (accessToken, refreshToken, profile, done) =>{ 
+    User.findOrCreate(profile, (err, user) => done(err, user));},
   ),
 );
-app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
 
-// GET /auth/google/callback
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request.  If authentication fails, the user will be redirected back to the
-//   login page.  Otherwise, the primary route function function will be called,
-//   which, in this example, will redirect the user to the home page.
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
   res.redirect('/');
 });
-
 passport.serializeUser(serializeUser);
 
 // used to deserialize the user
