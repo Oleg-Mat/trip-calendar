@@ -6,7 +6,14 @@ const UserSchema = new db.Schema({
   firstName: String,
   lastName: String,
   fullName: String,
+  locale: String,
+  avatar: String,
+  company: String,
+  email: String,
+  website: String,
+  photo: String,
 });
+
 UserSchema.statics.findOrCreate = async function (profile, cb) {
   let user = await this.findOne({ googleId: profile.id });
   if (!user) {
@@ -15,6 +22,8 @@ UserSchema.statics.findOrCreate = async function (profile, cb) {
       firstName: profile.name.familyName,
       lastName: profile.name.givenName,
       fullName: profile.displayName,
+      locale: profile._json.locale,
+      photo: profile.photos[0].value,
     });
     await user.save();
   }

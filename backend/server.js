@@ -1,4 +1,6 @@
 const express = require('express');
+const db = require('mongoose');
+const morgan = require('morgan');
 const path = require('path');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
@@ -11,8 +13,6 @@ const deserializeUser = require('./routes/deserialize.js');
 const afterGoogleAth = require('././routes/goggleStrategy');
 
 const app = express();
-const db = require('mongoose');
-const morgan = require('morgan');
 const User = require('./models/User');
 const apiRouter = require('./routes/api');
 
@@ -53,8 +53,9 @@ passport.use(
       realm: 'http://localhost:3000',
       scope: ['profile'],
     },
-    (accessToken, refreshToken, profile, done) =>{ 
-    User.findOrCreate(profile, (err, user) => done(err, user));},
+    (accessToken, refreshToken, profile, done) => {
+      User.findOrCreate(profile, (err, user) => done(err, user));
+    },
   ),
 );
 
@@ -65,6 +66,8 @@ passport.serializeUser(serializeUser);
 
 // used to deserialize the user
 passport.deserializeUser(deserializeUser);
-db.connect('mongodb+srv://root:z1qx2wc3e@cluster0-ser1y.mongodb.net/test?retryWrites=true&w=majority');
+db.connect('mongodb+srv://root:z1qx2wc3e@cluster0-ser1y.mongodb.net/nomadapp?retryWrites=true&w=majority', { useNewUrlParser: true });
 app.use('/api', apiRouter);
-app.listen(3000);
+app.listen(3000, () => {
+  console.log('Server is running on port 3000!');
+});
