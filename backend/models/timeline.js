@@ -1,12 +1,12 @@
 
-     const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-     const timelineSchema = new mongoose.Schema({
-       dateStart: Date,
-       dateEnd: Date,
-       place: String,
-       src: String,
-      
-     });
-     
-     module.exports = mongoose.model('Timeline', timelineSchema);
+const timelineSchema = new mongoose.Schema({
+  dateStart: Date,
+  dateEnd: Date,
+  place: String,
+  src: String,
+
+});
+
+module.exports = mongoose.model('Timeline', timelineSchema);

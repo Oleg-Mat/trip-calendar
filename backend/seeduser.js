@@ -1,19 +1,104 @@
 const mongoose = require('mongoose');
-const User = require('./models/users');
-const Timeline = require('./models/users');
-var faker = require('faker');
-mongoose.connect('mongodb://localhost/users', {
-  useNewUrlParser: true,
-});
+const faker = require('faker');
+const User = require('./models/User');
+const Timeline = require('./models/User');
 
 
-mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
-
-async function seed(index) {
-  const newCategory = new Category({
-   
+async function seedUsers() {
+  const newUser = new User({
+    avatar: faker.image.imageUrl(),
+    name: faker.random.name(),
+    company: faker.random.companyName(),
+    email: faker.internet.email(),
+    website: faker.internet.url(),
+    userId: faker.random.uuid(),
+  }, {
+    avatar: faker.image.imageUrl(),
+    name: faker.random.name(),
+    company: faker.random.companyName(),
+    email: faker.internet.email(),
+    website: faker.internet.url(),
+    userId: faker.random.uuid(),
+  }, {
+    avatar: faker.image.imageUrl(),
+    name: faker.random.name(),
+    company: faker.random.companyName(),
+    email: faker.internet.email(),
+    website: faker.internet.url(),
+    userId: faker.random.uuid(),
+  }, {
+    avatar: faker.image.imageUrl(),
+    name: faker.random.name(),
+    company: faker.random.companyName(),
+    email: faker.internet.email(),
+    website: faker.internet.url(),
+    userId: faker.random.uuid(),
+  }, {
+    avatar: faker.image.imageUrl(),
+    name: faker.random.name(),
+    company: faker.random.companyName(),
+    email: faker.internet.email(),
+    website: faker.internet.url(),
+    userId: faker.random.uuid(),
+  }, {
+    avatar: faker.image.imageUrl(),
+    name: faker.random.name(),
+    company: faker.random.companyName(),
+    email: faker.internet.email(),
+    website: faker.internet.url(),
+    userId: faker.random.uuid(),
+  }, {
+    avatar: faker.image.imageUrl(),
+    name: faker.random.name(),
+    company: faker.random.companyName(),
+    email: faker.internet.email(),
+    website: faker.internet.url(),
+    userId: faker.random.uuid(),
+  }, {
+    avatar: faker.image.imageUrl(),
+    name: faker.random.name(),
+    company: faker.random.companyName(),
+    email: faker.internet.email(),
+    website: faker.internet.url(),
+    userId: faker.random.uuid(),
+  }, {
+    avatar: faker.image.imageUrl(),
+    name: faker.random.name(),
+    company: faker.random.companyName(),
+    email: faker.internet.email(),
+    website: faker.internet.url(),
+    userId: faker.random.uuid(),
+  }, {
+    avatar: faker.image.imageUrl(),
+    name: faker.random.name(),
+    company: faker.random.companyName(),
+    email: faker.internet.email(),
+    website: faker.internet.url(),
+    userId: faker.random.uuid(),
   });
-  await newCategory.save();
+  await newUser.save();
+}
+async function seedTimelines() {
+  const newTimeline = new Timeline({
+    userId: String,
+    dateStart: faker.date.past(),
+    dateEnd: faker.date.future(),
+    place: faker.address.city(),
+    src: faker.image.imageUrl(),
+  }, {
+    userId: String,
+    dateStart: faker.date.past(),
+    dateEnd: faker.date.future(),
+    place: faker.address.city(),
+    src: faker.image.imageUrl(),
+  }, {
+    userId: String,
+    dateStart: faker.date.past(),
+    dateEnd: faker.date.future(),
+    place: faker.address.city(),
+    src: faker.image.imageUrl(),
+  });
 }
 
-seed();
+seedUsers();
+// seedTimelines();

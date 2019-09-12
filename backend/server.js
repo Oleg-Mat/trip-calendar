@@ -72,6 +72,13 @@ passport.serializeUser(serializeUser);
 
 // used to deserialize the user
 passport.deserializeUser(deserializeUser);
-db.connect('mongodb://localhost/nomadapp');
+db.connect('mongodb://localhost/nomadapp', { useNewUrlParser: true });
+db.connection.on('error', console.error.bind(console, 'connection error:'));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
+// passport.use(new LocalStrategy(User.authenticate()));
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
+// db.connect('mongodb://localhost/redditApp');
 app.use('/api', apiRouter);
 app.listen(3000);
