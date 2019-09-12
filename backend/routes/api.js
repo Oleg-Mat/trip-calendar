@@ -11,7 +11,7 @@ router.get('/login', passport.authenticate('google', { scope: ['https://www.goog
 
 router.get('/logout', auth, async (req, res) => {
   req.session.destroy();
-  res.send('false')
+  res.send('false');
 });
 
 module.exports = router;
