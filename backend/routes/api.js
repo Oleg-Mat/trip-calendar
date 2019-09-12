@@ -79,4 +79,10 @@ router.put('/images', auth, async (req, res) => {
   await Image.findByIdAndUpdate(_id, { description: text });
   res.json(true);
 });
+router.get('/logged', auth, async (req, res) => {
+  res.send(true);
+});
+router.get('/logout', auth, async (req, res) => {
+  req.session.destroy();
+});
 module.exports = router;
