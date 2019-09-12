@@ -80,5 +80,5 @@ app.set('view engine', 'hbs');
 // passport.serializeUser(User.serializeUser());
 // passport.deserializeUser(User.deserializeUser());
 // db.connect('mongodb://localhost/redditApp');
-app.use('/api', apiRouter);
+// app.use('/api', apiRouter);
 app.listen(3000);
