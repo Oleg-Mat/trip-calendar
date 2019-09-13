@@ -7,7 +7,6 @@ const UserSchema = new db.Schema({
   lastName: String,
   fullName: String,
   locale: String,
-  avatar: String,
   company: String,
   email: String,
   website: String,
