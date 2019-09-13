@@ -12,4 +12,3 @@ const TimelineSchema = new db.Schema({
 });
 
 module.exports = db.model('Timeline', TimelineSchema);
-g
