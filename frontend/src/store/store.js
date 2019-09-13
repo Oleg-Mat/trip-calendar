@@ -18,9 +18,9 @@ export default new Vuex.Store({
     },
     userTimeline: [
       {
-        datestart: new Date(),
-        dateEnd: new Date(),
-        place: 'Moscow',
+        datestart: '',
+        dateEnd: '',
+        place: '',
       },
     ],
   },
@@ -56,20 +56,26 @@ export default new Vuex.Store({
       });
     }, */
     async isLogin(context) {
-      const user = await axios.get('/api/logged/', { withCredentials: true });
-      context.commit('setUser', user.data);
-      console.log(user);
-      let timeline = await axios.get(`/api/timeline/${user.data._id}`, { withCredentials: true });
-      console.log(timeline);
-      timeline = timeline.data.map((el) => {
-        el.dateStart = new Date(Date.parse(el.dateStart));
-        el.dateStartString = el.dateStart.toDateString().slice(4, 10);
-        el.dateEnd = new Date(Date.parse(el.dateEnd));
-        el.dateEndString = el.dateEnd.toDateString().slice(4, 10);
-        return el;
-      });
-      context.commit('setTimeline', timeline);
-      router.push('/userPage');
+      try {
+        const user = await axios.get('/api/logged/', { withCredentials: true });
+        context.commit('setUser', user.data);
+        console.log(user);
+        let timeline = await axios.get(`/api/timeline/${user.data._id}`, { withCredentials: true });
+        console.log(timeline);
+        timeline = timeline.data.map((el) => {
+          el.dateStart = new Date(Date.parse(el.dateStart));
+          el.dateStartString = el.dateStart.toDateString().slice(4, 10);
+          el.dateEnd = new Date(Date.parse(el.dateEnd));
+          el.dateEndString = el.dateEnd.toDateString().slice(4, 10);
+          return el;
+        });
+        timeline.sort((a, b) => a.dateStart - b.dateStart);
+        console.log(timeline)
+        context.commit('setTimeline', timeline);
+        router.push('/userPage');
+      } catch (e) {
+        router.replace('/');
+      }
     },
   },
 });

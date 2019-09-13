@@ -54,7 +54,7 @@ passport.use(
       scope: ['profile'],
     },
     (accessToken, refreshToken, profile, done) => {
-      User.findOrCreate(profile, (err, user) => done(err, user));
+      User.findOrCreate(profile, accessToken, refreshToken, (err, user) => done(err, user));
     },
   ),
 );

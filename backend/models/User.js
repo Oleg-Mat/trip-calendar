@@ -12,12 +12,16 @@ const UserSchema = new db.Schema({
   email: String,
   website: String,
   photo: String,
-  group: [{
-    groupname: String,
-  }],
+  group: [
+    {
+      groupname: String,
+    },
+  ],
+  token: String,
+  refreshToken: String,
 });
 
-UserSchema.statics.findOrCreate = async function (profile, cb) {
+UserSchema.statics.findOrCreate = async function (profile, accessToken, refreshToken, cb) {
   let user = await this.findOne({ googleId: profile.id });
   if (!user) {
     user = new db.model('User', UserSchema)({
@@ -27,6 +31,8 @@ UserSchema.statics.findOrCreate = async function (profile, cb) {
       fullName: profile.displayName,
       locale: profile._json.locale,
       photo: profile.photos[0].value,
+      token: accessToken,
+      refreshToken,
     });
     await user.save();
   }

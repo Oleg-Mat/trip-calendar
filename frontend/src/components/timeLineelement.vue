@@ -9,7 +9,9 @@
     <div class="pl-4 text-left ">
       <p class="font-weight-bold">{{dateStart}}-{{dateEnd}}</p>
       <p class="font-weight-bold">{{place}}</p>
-      <p class="font-weight-bold">Also there: many</p>
+      <p class="font-weight-bold">Also there: 
+        <img :key="key" v-for="(img,key) in alsoThere" :src="img" alt="" style="width:30px" class="rounded-circle">
+        </p>
     </div>
   </div>
 </template>
@@ -18,10 +20,10 @@
 import axios from 'axios';
 export default {
     name: 'timeLineElement',
-    props: ['dateStart','dateEnd','place','img'],
+    props: ['dateStart','dateEnd','place','img','period'],
   data() {
     return {
-        alsoThere:''
+      alsoThere:[]
     };
   },
   computed: {
@@ -29,9 +31,21 @@ export default {
       return this.$store.state.user;
     },
   },
-  methods: {},
+  methods: {
+    async getNearest() {
+      let nearestFriends = await axios.get(
+        `/api/timelineonperiod?dateStart=${this.period.dateStart}&dateEnd=${this.period.dateEnd}&place=${this.place}`,
+        { withCredentials: true },
+      );
+      console.log(nearestFriends)
+      nearestFriends = nearestFriends.data.map(el => el.userId.photo);
+      console.log(nearestFriends)
+      this.alsoThere=nearestFriends
+      
+    },
+  },
   mounted() {
-    /* this.$store.dispatch('login'); */
+   this.getNearest()
   },
 };
 </script>

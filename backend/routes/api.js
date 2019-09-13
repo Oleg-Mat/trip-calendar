@@ -35,8 +35,11 @@ router.get('/timelineonperiod', async (req, res) => {
   InputStart = new Date(InputStart);
 
   const usersWithTimeline = await Timeline.find({
-    $and: [{ place: InputPlace }, { $or: [{ dateStart: { $lte: InputEnd } }, { dateEnd: { $gte: InputStart } }] }],
-  }).populate('userId');
+    $and: [{ place: InputPlace }, { $and: [{ dateStart: { $lte: InputEnd } }, { dateEnd: { $gte: InputStart } }] }],
+  })
+    .sort({ dateStart: 1 })
+    .populate('userId')
+    .exec();
 
   res.json(usersWithTimeline);
 });
