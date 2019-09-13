@@ -46,6 +46,22 @@ router.get('/timelineonperiod',  async (req, res) => {
 res.json(usersWithTimeline);
 });
 
+router.get('/todaylocation',  async (req, res) => {
+  let {  place:InputPlace } = req.query;
+  const today = new Date();
+
+      const usersWithTimeline = await Timeline.find({
+        $and: [
+          { place: InputPlace },
+          {
+            $or: [{ dateStart: { $lte: today } },
+            { dateEnd: { $lte: today } }]
+          }]
+    
+      });
+
+res.json(usersWithTimeline);
+});
 
 router.post('/timeline', (req, res) => {
   const { userId, dateStart, dateEnd, place } = req.body;
