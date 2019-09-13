@@ -28,6 +28,24 @@ router.get('/timeline/:_id', auth, async (req, res) => {
 
   res.json(user);
 });
+router.get('/timelineonperiod',  async (req, res) => {
+  let { dateStart:InputStart, dateEnd:InputEnd, place:InputPlace } = req.query;
+  
+      InputEnd = new Date(InputEnd);
+      InputStart = new Date(Date.parse(InputStart));
+
+ const usersWithTimeline = await Timeline.find({
+   $and:[
+     {place:InputPlace} , 
+     {$or:[{dateStart:{$lte:InputEnd}},
+       {dateEnd:{$gte:InputStart}}]
+  }]
+ 
+}).populate("userId");
+
+res.json(usersWithTimeline);
+});
+
 
 router.post('/timeline', (req, res) => {
   const { userId, dateStart, dateEnd, place } = req.body;
