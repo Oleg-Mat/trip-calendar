@@ -1,8 +1,10 @@
 const passport = require('passport');
 const express = require('express');
+const db = require('mongoose');
 const auth = require('./auth');
+const Timeline = require('../models/Timeline');
 const User = require('../models/User');
-const TimeLine= require('..//models/Timeline.js')
+
 const router = express.Router();
 
 router.get('/logged', auth, async (req, res) => {
@@ -15,19 +17,26 @@ router.get('/logout', auth, async (req, res) => {
   res.send('false');
 });
 
-router.get('/user/:_id', auth, async (req, res) => { 
-
-  const user = await User.findOne({_id:req.params._id});
+router.get('/user/:_id', auth, async (req, res) => {
+  const user = await User.findOne({ _id: req.params._id });
 
   res.json(user);
 });
 
-router.get('/timeline/:_id', auth,  async (req, res) => {
-
+router.get('/timeline/:_id', auth, async (req, res) => {
   const user = await TimeLine.find({ userId: req.params._id });
-  
+
   res.json(user);
 });
 
-
+router.post('/timeline', (req, res) => {
+  const { userId, dateStart, dateEnd, place } = req.body;
+  const timeline = new Timeline({
+    userId,
+    dateStart,
+    dateEnd,
+    place,
+  });
+  timeline.save();
+});
 module.exports = router;
