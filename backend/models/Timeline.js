@@ -2,7 +2,7 @@ const db = require('mongoose');
 
 const TimelineSchema = new db.Schema({
  
-  userId:mongoose.Schema.Types.ObjectId, 
+  userId:db.Schema.Types.ObjectId, 
   googleId:String,
   dateStart: Date,
   dateEnd: Date,
