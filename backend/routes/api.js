@@ -17,14 +17,14 @@ router.get('/logout', auth, async (req, res) => {
   res.send('false');
 });
 
-router.get('/user/:_id', auth, async (req, res) => {
+router.get('/user/:_id', async (req, res) => {
   const user = await User.findOne({ _id: req.params._id });
   console.log(req.params);
-  
+
   res.json(user);
 });
 
-router.post('/user/:_id/updateprofile', auth, async (req, res) => {
+router.post('/user/:_id/updateprofile', async (req, res) => {
   const changedUser = {};
   changedUser.firstName = req.body.firstName;
   changedUser.lastName = req.body.lastName;
@@ -37,7 +37,7 @@ router.post('/user/:_id/updateprofile', auth, async (req, res) => {
 });
 
 router.get('/timeline/:_id', auth, async (req, res) => {
-  const user = await TimeLine.find({ userId: req.params._id });
+  const user = await Timeline.find({ userId: req.params._id });
 
   res.json(user);
 });
@@ -55,11 +55,27 @@ router.get('/timelineonperiod', async (req, res) => {
           { dateEnd: { $gte: InputStart } }],
       }],
 
-  }).populate('userId');
+  }).populate('userId', [], User).exec();
 
   res.json(usersWithTimeline);
 });
 
+router.get('/todaylocation', async (req, res) => {
+  const { place: InputPlace } = req.query;
+  const today = new Date();
+
+  const usersWithTimeline = await Timeline.find({
+    $and: [
+      { place: InputPlace },
+      {
+        $or: [{ dateStart: { $lte: today } },
+          { dateEnd: { $lte: today } }],
+      }],
+
+  });
+
+  res.json(usersWithTimeline);
+});
 
 router.post('/timeline', async (req, res) => {
   const {
