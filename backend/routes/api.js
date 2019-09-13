@@ -5,7 +5,7 @@ const auth = require('./auth');
 const router = express.Router();
 
 router.get('/logged', auth, async (req, res) => {
-  res.send(true);
+  res.json(req.session.passport.user);
 });
 router.get('/login', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
 

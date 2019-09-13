@@ -1,6 +1,7 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
 import axios from 'axios';
+import router from '../router/router';
 
 Vue.use(Vuex);
 
@@ -38,7 +39,7 @@ export default new Vuex.Store({
   },
 
   actions: {
-    /* login(context) {
+    /* getUserData(context) {
       axios.get('/api/user/', { withCredentials: true }).then((res) => {
         const user = res.data;
         context.commit('setUser', user);
@@ -54,10 +55,17 @@ export default new Vuex.Store({
         context.commit('setTimeline', timeline);
       });
     }, */
-    isLogin() {
-      axios.get('/api/logged/', { withCredentials: true }).then(res => {
-        this.$router.push('/userPage')
-      });
-    }
+    isLogin(context) {
+      axios
+        .get('/api/logged/', { withCredentials: true })
+        .then((res) => {
+          const user = res.data;
+          context.commit('setUser', user);
+          console.log(user)
+          router.push('/userPage')
+
+        })
+        .catch((err) => {});
+    },
   },
 });

@@ -2,10 +2,11 @@
   <div class="w-100 d-flex flex-column">
     <img
       class="mb-2 h-25 rounded-circle flex-grow-0 align-self-center"
-      :src="user.avatar"
+      style="width:100px"
+      :src="user.photo"
       alt="userimage"
     />
-    <h4>{{user.userName}}</h4>
+    <h4>{{user.fullName}}</h4>
     <p class="mb-5">{{user.company}}</p>
 
     <div class=" rounded bg-light text-left p-2 mb-1">
@@ -73,7 +74,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch('login');
+    this.$store.dispatch('getUserData');
   },
 };
 </script>

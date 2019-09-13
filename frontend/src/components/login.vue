@@ -1,6 +1,7 @@
 <template>
   <div class="w-100 d-flex flex-column justify-content-center h-100">
     <button  class="mt-5 btn btn-success"><a href="/api/login">Authorise</a></button>
+<!--     <button  @click="login"class="mt-5 btn btn-success">qqqqq</button> -->
   </div>
 </template>
 
@@ -18,7 +19,7 @@ export default {
   methods: {
     login() {
 
-/*       axios.post('/api/login/', { withCredentials: true })
+      /* axios.get('/api/login/', { withCredentials: true })
       .then((res) => {
         router.push('userPage')
       })
@@ -33,7 +34,7 @@ export default {
     }
   },
   mounted(){
-    this.isLogin()
+    this.$store.dispatch('isLogin')
   }
   
 };

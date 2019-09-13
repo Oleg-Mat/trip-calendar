@@ -30,7 +30,7 @@ export default {
   },
   methods: {},
   mounted() {
-    this.$store.dispatch('login');
+    /* this.$store.dispatch('login'); */
   },
 };
 </script>
