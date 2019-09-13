@@ -1,7 +1,8 @@
 <template>
-  <div class="card-body d-flex justify-content-between align-items-center rounded w-100 mb-3 bg-light">
+  <div class="card-body d-flex justify-content-between align-items-center rounded w-100 mb-3 bg-light flex-grow-0 ">
     <img
-      class="h-25 flex-grow-0 align-self-center"
+      style="width:100px; height: 100px "
+      class="flex-grow-0 align-self-center"
       :src="img"
       alt="userimage"
     />

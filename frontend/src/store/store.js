@@ -55,17 +55,21 @@ export default new Vuex.Store({
         context.commit('setTimeline', timeline);
       });
     }, */
-    isLogin(context) {
-      axios
-        .get('/api/logged/', { withCredentials: true })
-        .then((res) => {
-          const user = res.data;
-          context.commit('setUser', user);
-          console.log(user)
-          router.push('/userPage')
-
-        })
-        .catch((err) => {});
+    async isLogin(context) {
+      const user = await axios.get('/api/logged/', { withCredentials: true });
+      context.commit('setUser', user.data);
+      console.log(user);
+      let timeline = await axios.get(`/api/timeline/${user.data._id}`, { withCredentials: true });
+      console.log(timeline);
+      timeline = timeline.data.map((el) => {
+        el.dateStart = new Date(Date.parse(el.dateStart));
+        el.dateStartString = el.dateStart.toDateString().slice(4, 10);
+        el.dateEnd = new Date(Date.parse(el.dateEnd));
+        el.dateEndString = el.dateEnd.toDateString().slice(4, 10);
+        return el;
+      });
+      context.commit('setTimeline', timeline);
+      router.push('/userPage');
     },
   },
 });

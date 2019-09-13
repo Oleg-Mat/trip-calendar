@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 d-flex flex-column">
+  <div class="w-100 d-flex flex-column h-100">
     <img
       class="mb-2 h-25 rounded-circle flex-grow-0 align-self-center"
       style="width:100px"
@@ -9,19 +9,19 @@
     <h4>{{user.fullName}}</h4>
     <p class="mb-5">{{user.company}}</p>
 
-    <div class=" rounded bg-light text-left p-2 mb-1">
+    <div class="rounded bg-light text-left p-2 mb-1">
       <p class="align-self-start mb-1">Email</p>
       <h5 class="align-self-start">{{user.email}}</h5>
     </div>
-    <div class=" rounded bg-light text-left p-2 mb-1">
+    <div class="rounded bg-light text-left p-2 mb-1">
       <p class="align-self-start mb-1">Password</p>
       <h5 class="align-self-start mb-1">*******</h5>
     </div>
-    <div class=" rounded bg-light text-left p-2 mb-1">
+    <div class="rounded bg-light text-left p-2 mb-1">
       <h5 class="align-self-start mb-1">Company</h5>
       <p class="align-self-start">{{user.company}}</p>
     </div>
-    <div class=" rounded bg-light text-left p-2 mb-1">
+    <div class="rounded bg-light text-left p-2 mb-1">
       <h5 class="align-self-start mb-1">Website</h5>
       <p class="align-self-start">{{user.website}}</p>
     </div>
@@ -34,8 +34,11 @@
         My timeline
         <span class="badge badge-primary badge-pill">></span>
       </li>
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        My calendar
+      <li
+        @click="showMap"
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
+        Map
         <span class="badge badge-primary badge-pill">></span>
       </li>
     </ul>
@@ -71,6 +74,9 @@ export default {
   methods: {
     showTimeline() {
       this.$router.push({ name: 'timeLine', params: { timeline: this.$store.state.userTimeline } });
+    },
+    showMap() {
+      this.$router.push({ name: 'mapPage' });
     },
   },
   mounted() {
