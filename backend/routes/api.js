@@ -14,4 +14,19 @@ router.get('/logout', auth, async (req, res) => {
   res.send('false');
 });
 
+router.get('/user/:_id', async (req, res) => { 
+
+  const user = await User.findOne({_id:req.params._id});
+
+  res.json(user);
+});
+
+router.get('/timeline/:_id',  async (req, res) => {
+
+  const user = await User.findOne({_id:req.params._id});
+  
+  res.json(user);
+});
+
+
 module.exports = router;

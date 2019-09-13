@@ -12,6 +12,9 @@ const UserSchema = new db.Schema({
   email: String,
   website: String,
   photo: String,
+  group: [{
+    groupname: String,
+  }],
 });
 
 UserSchema.statics.findOrCreate = async function (profile, cb) {
