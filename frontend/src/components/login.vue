@@ -1,6 +1,10 @@
 <template>
-  <div class="w-100 d-flex flex-column justify-content-center h-100">
-    <button  class="mt-5 btn btn-success"><a href="/api/login">Authorise</a></button>
+  <div class="w-100 d-flex flex-column justify-content-center" style="height:95vh">
+    
+      <a href="/api/login">
+    <img style width= "100px" src="/login.png" alt="">
+    <p class="text-info" style="font-size:x-large">Login with google</p>
+    </a>
 <!--     <button  @click="login"class="mt-5 btn btn-success">qqqqq</button> -->
   </div>
 </template>

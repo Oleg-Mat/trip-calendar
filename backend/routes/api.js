@@ -24,7 +24,7 @@ router.get('/user/:_id', auth, async (req, res) => {
 });
 
 router.get('/timeline/:_id', auth, async (req, res) => {
-  const user = await TimeLine.find({ userId: req.params._id });
+  const user = await Timeline.find({ userId: req.params._id });
 
   res.json(user);
 });
@@ -65,8 +65,11 @@ res.json(usersWithTimeline).populate('userId',[],User).exec();
 });
 
 
+
 router.post('/timeline', (req, res) => {
-  const { userId, dateStart, dateEnd, place } = req.body;
+  const {
+ userId, dateStart, dateEnd, place 
+} = req.body;
   const timeline = new Timeline({
     userId,
     dateStart,
