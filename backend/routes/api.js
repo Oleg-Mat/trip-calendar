@@ -1,6 +1,10 @@
 const passport = require('passport');
 const express = require('express');
 const auth = require('./auth');
+const Timeline = require('../models/Timeline');
+const User = require('../models/User');
+const db = require('mongoose');
+
 
 const router = express.Router();
 
@@ -15,6 +19,15 @@ router.get('/logout', auth, async (req, res) => {
 });
 
 router.post('/timeline', (req, res) => {
-  console.log(req.body);
+  const {
+    userId, dateStart, dateEnd, place,
+  } = req.body;
+  const timeline = new Timeline({
+    userId,
+    dateStart,
+    dateEnd,
+    place,
+  });
+  timeline.save();
 });
 module.exports = router;

@@ -6,9 +6,10 @@ const TimelineSchema = new db.Schema({
   dateStart: Date,
   dateEnd: Date,
   place: String,
-  src: String,
-  lat: String,
-  lng: String,
+  src: { type: String, default: 'https://media.mnn.com/assets/images/2019/01/grumpy_cat.jpg.653x0_q80_crop-smart.jpg' },
+  lat: { type: String, default: '' },
+  lng: { type: String, default: '' },
 });
 
 module.exports = db.model('Timeline', TimelineSchema);
+g
