@@ -1,14 +1,13 @@
 const db = require('mongoose');
 
 const TimelineSchema = new db.Schema({
- 
-  userId:mongoose.Schema.Types.ObjectId, 
-  googleId:String,
+
+  userId: db.Schema.Types.ObjectId,
   dateStart: Date,
   dateEnd: Date,
   place: String,
   src: String,
-  lat:String,
+  lat: String,
   lng: String,
 });
 
