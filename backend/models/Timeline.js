@@ -1,8 +1,7 @@
 const db = require('mongoose');
 
 const TimelineSchema = new db.Schema({
-
-  userId: db.Schema.Types.ObjectId,
+  userId: { type: db.Schema.Types.ObjectId, ref: 'User' },
   dateStart: Date,
   dateEnd: Date,
   place: String,
