@@ -1,0 +1,43 @@
+<template>
+  <div class="w-100 d-flex flex-column justify-content-center h-100">
+    <button  class="mt-5 btn btn-success"><a href="/api/login">Authorise</a></button>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+import timeLineElement from '@/components/timeLineElement';
+export default {
+  name: 'login',
+  components: { },
+  data() {
+    return {};
+  },
+  computed: {
+  },
+  methods: {
+    login() {
+
+/*       axios.post('/api/login/', { withCredentials: true })
+      .then((res) => {
+        router.push('userPage')
+      })
+      .catch(err=>{
+        colnsole.log(err)
+      }) */
+    },
+    isLogin() {
+      axios.get('/api/logged/', { withCredentials: true }).then(res => {
+        this.$router.push('/userPage')
+      });
+    }
+  },
+  mounted(){
+    this.isLogin()
+  }
+  
+};
+</script>
+
+<style >
+</style>

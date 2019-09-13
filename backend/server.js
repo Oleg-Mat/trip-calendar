@@ -59,12 +59,12 @@ passport.use(
 );
 
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
-  res.redirect('/');
+  res.redirect('http://localhost:8080');
 });
 passport.serializeUser(serializeUser);
 
 // used to deserialize the user
 passport.deserializeUser(deserializeUser);
-db.connect('mongodb+srv://root:z1qx2wc3e@cluster0-ser1y.mongodb.net/test?retryWrites=true&w=majority');
+db.connect('mongodb+srv://root:z1qx2wc3e@cluster0-ser1y.mongodb.net/nomadapp?retryWrites=true&w=majority');
 app.use('/api', apiRouter);
 app.listen(3000);

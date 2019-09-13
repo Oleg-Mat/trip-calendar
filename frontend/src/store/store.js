@@ -38,7 +38,7 @@ export default new Vuex.Store({
   },
 
   actions: {
-    login(context) {
+    /* login(context) {
       axios.get('/api/user/', { withCredentials: true }).then((res) => {
         const user = res.data;
         context.commit('setUser', user);
@@ -53,6 +53,11 @@ export default new Vuex.Store({
         });
         context.commit('setTimeline', timeline);
       });
-    },
+    }, */
+    isLogin() {
+      axios.get('/api/logged/', { withCredentials: true }).then(res => {
+        this.$router.push('/userPage')
+      });
+    }
   },
 });
