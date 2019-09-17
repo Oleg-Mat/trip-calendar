@@ -32,7 +32,7 @@ router.get('/timelineonperiod', async (req, res) => {
   let { dateStart: InputStart, dateEnd: InputEnd, place: InputPlace } = req.query;
 
   InputEnd = new Date(InputEnd);
-  InputStart = new Date(InputStart);
+  InputStart = new Date(Date.parse(InputStart));
 
   const usersWithTimeline = await Timeline.find({
     $and: [{ place: InputPlace }, { $and: [{ dateStart: { $lte: InputEnd } }, { dateEnd: { $gte: InputStart } }] }],
@@ -40,6 +40,22 @@ router.get('/timelineonperiod', async (req, res) => {
     .sort({ dateStart: 1 })
     .populate('userId')
     .exec();
+
+  res.json(usersWithTimeline);
+});
+
+router.get('/todaylocation', async (req, res) => {
+  const { place: InputPlace } = req.query;
+  const today = new Date();
+
+  const usersWithTimeline = await Timeline.find({
+    $and: [
+      { place: InputPlace },
+      {
+        $or: [{ dateStart: { $lte: today } }, { dateEnd: { $lte: today } }],
+      },
+    ],
+  });
 
   res.json(usersWithTimeline);
 });
