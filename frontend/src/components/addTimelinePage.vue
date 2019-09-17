@@ -41,6 +41,8 @@ export default {
         { userId: this.user._id, dateStart: this.$refs.start.value, dateEnd: this.$refs.end.value, place: this.place },
         { withCredentials: true },
       );
+      await this.$store.dispatch('isLogin');
+      this.$router.push('/timeline')
     },
   },
   mounted() {},

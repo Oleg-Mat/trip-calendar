@@ -1,7 +1,7 @@
 const User = require('../models/User');
 
 function deserialize(id, done) {
-  User.findOne({ googleId: id.googleId }, (err, user) => {
+  User.findById(id, (err, user) => {
     done(err, user);
   });
 }

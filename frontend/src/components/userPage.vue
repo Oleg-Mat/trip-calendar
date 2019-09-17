@@ -43,7 +43,7 @@
       </li>
     </ul>
 
-    <div class="w-100 d-flex flex-column align-items-start mt-3">
+    <div v-if="nearest" class="w-100 d-flex flex-column align-items-start mt-3">
       <h5 class="mb-3">Upcomming events</h5>
       <timeLineElement
         :dateStart="nearest.dateStartString"
@@ -72,7 +72,7 @@ export default {
       return this.$store.state.user;
     },
     nearest: function() {
-      return this.$store.state.userTimeline[0];
+      return this.$store.state.userTimeline.length>0?this.$store.state.userTimeline[0]:false;
     },
   },
   methods: {

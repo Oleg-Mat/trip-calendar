@@ -31,6 +31,7 @@ UserSchema.statics.findOrCreate = async function (profile, accessToken, refreshT
       fullName: profile.displayName,
       locale: profile._json.locale,
       photo: profile.photos[0].value,
+      email: profile.emails[0].value,
       token: accessToken,
       refreshToken,
     });

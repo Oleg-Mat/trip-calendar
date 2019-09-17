@@ -8,9 +8,21 @@ const User = require('../models/User');
 const router = express.Router();
 
 router.get('/logged', auth, async (req, res) => {
-  res.json(req.session.passport.user);
+  const responce = {
+    _id: req.user._id,
+    firstName: req.user.firstName,
+    lastName: req.user.lastName,
+    photo: req.user.photo,
+    email: req.user.email,
+    group: req.user.group,
+  };
+  res.json(responce);
 });
-router.get('/login', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+
+// строчка чтоб обновить токены
+// { accessType: 'offline', prompt: 'consent' }
+
+router.get('/login', passport.authenticate('google'));
 
 router.get('/logout', auth, async (req, res) => {
   req.session.destroy();
@@ -35,7 +47,11 @@ router.get('/timelineonperiod', async (req, res) => {
   InputStart = new Date(Date.parse(InputStart));
 
   const usersWithTimeline = await Timeline.find({
-    $and: [{ place: InputPlace }, { $and: [{ dateStart: { $lte: InputEnd } }, { dateEnd: { $gte: InputStart } }] }],
+    $and: [
+      { place: InputPlace },
+      { $and: [{ dateStart: { $lte: InputEnd } }, { dateEnd: { $gte: InputStart } }] },
+      { userId: { $ne: req.user._id } },
+    ],
   })
     .sort({ dateStart: 1 })
     .populate('userId')
@@ -71,5 +87,6 @@ router.post('/timeline', (req, res) => {
     place,
   });
   timeline.save();
+  res.json('true');
 });
 module.exports = router;

@@ -9,7 +9,7 @@
     <div class="pl-4 text-left ">
       <p class="font-weight-bold">{{dateStart}}-{{dateEnd}}</p>
       <p class="font-weight-bold">{{place}}</p>
-      <p class="font-weight-bold">Also there: 
+      <p v-if= "alsoThere.length" class="font-weight-bold">Also there: 
         <img :key="key" v-for="(img,key) in alsoThere" :src="img" alt="" style="width:30px" class="rounded-circle">
         </p>
     </div>
@@ -30,6 +30,12 @@ export default {
     user: function() {
       return this.$store.state.user;
     },
+    
+    len: function() {
+      console.log(this.alsoThere.lenght)
+      return this.alsoThere.length;
+    },
+
   },
   methods: {
     async getNearest() {

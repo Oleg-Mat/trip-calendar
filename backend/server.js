@@ -3,6 +3,7 @@ const db = require('mongoose');
 const morgan = require('morgan');
 const path = require('path');
 const session = require('express-session');
+
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -21,6 +22,7 @@ app.use(
     createParentPath: true,
   }),
 );
+
 const corsOptions = {
   origin: 'http://localhost:8080',
   credentials: true,
@@ -46,12 +48,20 @@ app.use(passport.session());
 app.use(cookieParser());
 passport.use(
   new GoogleStrategy(
+    // {
+    //   clientID: '283536601534-4rfndb0gn8dbp9f45a0d6vjo79ra1325.apps.googleusercontent.com',
+    //   clientSecret: 'zNgtA9WUqqOaiUyNJN8Eg31I',
+    //   callbackURL: 'http://localhost:3000/auth/google/callback',
+    //   realm: 'http://localhost:3000',
+    //   scope: ['profile'],
+    // },
     {
-      clientID: '283536601534-4rfndb0gn8dbp9f45a0d6vjo79ra1325.apps.googleusercontent.com',
-      clientSecret: 'zNgtA9WUqqOaiUyNJN8Eg31I',
+      clientID: '557330626841-2el0lme6gfshj09l4q2le8hpso0947qc.apps.googleusercontent.com',
+      clientSecret: 'EwayybnyGK58HL9AnutS3Dn8',
       callbackURL: 'http://localhost:3000/auth/google/callback',
       realm: 'http://localhost:3000',
-      scope: ['profile'],
+
+      scope: ['profile', 'email'],
     },
     (accessToken, refreshToken, profile, done) => {
       User.findOrCreate(profile, accessToken, refreshToken, (err, user) => done(err, user));
@@ -66,7 +76,9 @@ passport.serializeUser(serializeUser);
 
 // used to deserialize the user
 passport.deserializeUser(deserializeUser);
-db.connect('mongodb+srv://root:z1qx2wc3e@cluster0-ser1y.mongodb.net/nomadapp?retryWrites=true&w=majority', { useNewUrlParser: true });
+db.connect('mongodb+srv://root:z1qx2wc3e@cluster0-ser1y.mongodb.net/nomadapp?retryWrites=true&w=majority', {
+  useNewUrlParser: true,
+});
 app.use('/api', apiRouter);
 app.listen(3000, () => {
   console.log('Server is running on port 3000!');
