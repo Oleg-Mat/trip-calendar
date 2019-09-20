@@ -18,6 +18,7 @@ const UserSchema = new db.Schema({
     },
   ],
   token: String,
+  tokenExpires: { type: Date, default: new Date().setHours(new Date().getHours() + 1) },
   refreshToken: String,
 });
 
@@ -26,8 +27,8 @@ UserSchema.statics.findOrCreate = async function (profile, accessToken, refreshT
   if (!user) {
     user = new db.model('User', UserSchema)({
       googleId: profile.id,
-      firstName: profile.name.familyName,
-      lastName: profile.name.givenName,
+      firstName: profile.name.givenName,
+      lastName: profile.name.familyName,
       fullName: profile.displayName,
       locale: profile._json.locale,
       photo: profile.photos[0].value,

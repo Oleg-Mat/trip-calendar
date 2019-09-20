@@ -69,7 +69,11 @@ export default {
   },
   computed: {
     user: function() {
+      if(this.$route.params.userId===this.$store.state.user._id) {
       return this.$store.state.user;
+      } else {
+      return this.$store.state.friend;
+      }
     },
     nearest: function() {
       return this.$store.state.userTimeline.length>0?this.$store.state.userTimeline[0]:false;
@@ -77,7 +81,7 @@ export default {
   },
   methods: {
     showTimeline() {
-      this.$router.push({ name: 'timeLine', params: { timeline: this.$store.state.userTimeline } });
+      this.$router.push(`/timeline/${this.user._id}`);
     },
     showMap() {
       this.$router.push({ name: 'mapPage' });

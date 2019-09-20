@@ -1,12 +1,38 @@
 const passport = require('passport');
 const express = require('express');
 const db = require('mongoose');
+const axios = require('axios');
 const auth = require('./auth');
 const Timeline = require('../models/Timeline');
 const User = require('../models/User');
 
 const router = express.Router();
 
+/* async function updateToken(req, res, next) {
+  if (req.user) {
+    if (req.user.tokenExpires > new Date(req.user.tokenExpires - 15 * 60)) {
+      const res = await axios.post('https://oauth2.googleapis.com/token', {
+        refresh_token: req.user.refreshToken,
+        client_id: process.env.clientId,
+        client_secret: process.env.clientSecret,
+        grant_type: 'refresh_token',
+      });
+      const accessToken = res.data.access_token;
+      req.user.token = accessToken;
+      req.user.tokenExpires = new Date().setHours(new Date().getHours() + 1);
+      await User.findByIdAndUpdate(req.user._id, {
+        token: accessToken,
+        tokenExpires: new Date().setHours(new Date().getHours() + 1),
+      });
+      console.log('token updated');
+      next();
+    }
+  } else {
+    next();
+  }
+}
+
+router.use(updateToken); */
 router.get('/logged', auth, async (req, res) => {
   const responce = {
     _id: req.user._id,
@@ -76,15 +102,32 @@ router.get('/todaylocation', async (req, res) => {
   res.json(usersWithTimeline);
 });
 
-router.post('/timeline', (req, res) => {
+router.post('/timeline', async (req, res) => {
   const {
- userId, dateStart, dateEnd, place 
+ userId, dateStart, dateEnd, place, googleId = '' 
 } = req.body;
+  console.log(process.env.apiKey);
+  const placeObj = await axios.get(
+    `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${place}&key=${process.env.apiKey}&`,
+  );
+  const { lat, lng } = placeObj.data.results[0].geometry.location;
+  const placePicHash = placeObj.data.results[0].photos[0].photo_reference;
+  console.log(placeObj.data.results[0].photos[0].photo_reference);
+  const placePic = await axios.get(
+    `https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference=${placePicHash}&key=${process.env.apiKey}`,
+  );
+
+  const src = placePic.request._redirectable._currentUrl;
+
   const timeline = new Timeline({
     userId,
     dateStart,
     dateEnd,
     place,
+    src,
+    lat,
+    lng,
+    googleId,
   });
   timeline.save();
   res.json('true');

@@ -1,9 +1,10 @@
+require('./workers/Worker.js')
 const express = require('express');
 const db = require('mongoose');
 const morgan = require('morgan');
 const path = require('path');
 const session = require('express-session');
-
+require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -12,6 +13,7 @@ const fileUpload = require('express-fileupload');
 const serializeUser = require('./routes/serealize.js');
 const deserializeUser = require('./routes/deserialize.js');
 const afterGoogleAth = require('././routes/goggleStrategy');
+require('pretty-error').start();
 
 const app = express();
 const User = require('./models/User');
@@ -56,12 +58,12 @@ passport.use(
     //   scope: ['profile'],
     // },
     {
-      clientID: '557330626841-2el0lme6gfshj09l4q2le8hpso0947qc.apps.googleusercontent.com',
-      clientSecret: 'EwayybnyGK58HL9AnutS3Dn8',
+      clientID: process.env.clientId,
+      clientSecret: process.env.clientSecret,
       callbackURL: 'http://localhost:3000/auth/google/callback',
       realm: 'http://localhost:3000',
 
-      scope: ['profile', 'email'],
+      scope: ['profile', 'email', 'https://www.googleapis.com/auth/calendar.readonly'],
     },
     (accessToken, refreshToken, profile, done) => {
       User.findOrCreate(profile, accessToken, refreshToken, (err, user) => done(err, user));
@@ -82,4 +84,6 @@ db.connect('mongodb+srv://root:z1qx2wc3e@cluster0-ser1y.mongodb.net/nomadapp?ret
 app.use('/api', apiRouter);
 app.listen(3000, () => {
   console.log('Server is running on port 3000!');
+  console.log(`${__dirname}`);
+  
 });

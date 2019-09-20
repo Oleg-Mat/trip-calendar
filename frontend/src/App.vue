@@ -1,18 +1,23 @@
 <template>
-  <div id="app" class="d-flex flex-column justify-content-center align-items-center mt-0 mb-0 h-100 w-100 p-3 container" style="background-color:#f6f5f5">
+  <div
+    id="app"
+    class="d-flex flex-column justify-content-center align-items-center mt-0 mb-0 h-100 w-100 p-0 container"
+    style="background-color:#f6f5f5"
+  >
+    <navBar />
     <transition mode="out-in" name="fade">
-    <router-view/>
+      <router-view />
     </transition>
-    
   </div>
 </template>
 
 <script>
-
+import navBar from '@/components/navBar.vue'
 export default {
   name: 'App',
+  components:{navBar},
   mounted() {
-    
+
   }
 }
 </script>

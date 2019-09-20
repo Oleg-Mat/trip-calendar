@@ -10,7 +10,8 @@
       <p class="font-weight-bold">{{dateStart}}-{{dateEnd}}</p>
       <p class="font-weight-bold">{{place}}</p>
       <p v-if= "alsoThere.length" class="font-weight-bold">Also there: 
-        <img :key="key" v-for="(img,key) in alsoThere" :src="img" alt="" style="width:30px" class="rounded-circle">
+        <!-- <img :key="key" v-for="(img,key) in alsoThere" :src="img" alt="" style="width:30px" class="rounded-circle"> -->
+        <friendImage :key="key" v-for="(user,key) in alsoThere" :user="user" />
         </p>
     </div>
   </div>
@@ -18,8 +19,10 @@
 
 <script>
 import axios from 'axios';
+import friendImage from '@/components/friendImage.vue'
 export default {
     name: 'timeLineElement',
+    components: {friendImage},
     props: ['dateStart','dateEnd','place','img','period'],
   data() {
     return {
@@ -44,7 +47,7 @@ export default {
         { withCredentials: true },
       );
       console.log(nearestFriends)
-      nearestFriends = nearestFriends.data.map(el => el.userId.photo);
+      nearestFriends = nearestFriends.data.map(el => el.userId);
       console.log(nearestFriends)
       this.alsoThere=nearestFriends
       

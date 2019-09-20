@@ -37,9 +37,12 @@ export default {
       });
     }
   },
-  mounted(){
-    this.$store.dispatch('isLogin')
-  }
+  async mounted(){
+    
+    await this.$store.dispatch('isLogin')
+    
+
+    }
   
 };
 </script>

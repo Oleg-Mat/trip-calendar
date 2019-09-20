@@ -42,7 +42,7 @@ export default {
         { withCredentials: true },
       );
       await this.$store.dispatch('isLogin');
-      this.$router.push('/timeline')
+      this.$router.push(`/timeline/${this.user._id}`)
     },
   },
   mounted() {},

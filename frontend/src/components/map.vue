@@ -23,6 +23,11 @@ export default {
       center: new google.maps.LatLng(59.93, 30.32),
     };
     this.map = new google.maps.Map(element, options);
+      let marker = new google.maps.Marker({
+      position: {lat: 41.3850639, lng: 2.1734035} ,
+      map: this.map,
+      icon: {url:'https://lh3.googleusercontent.com/-Rmudoi3nTsk/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rcrkDBwvcPUe7TvuEbo-onkb0SjQw/photo.jpg', scaledSize: new google.maps.Size(30, 30)}
+  });
   },
   methods: {},
 };

@@ -17,13 +17,13 @@ export default new Router({
       component: login,
     },
     {
-      path: '/timeline',
+      path: '/timeline/:userId',
       name: 'timeLine',
       component: timeLinePage,
       props: true,
     },
     {
-      path: '/userPage',
+      path: '/userPage/:userId',
       name: 'userPage',
       component: userPage,
       props: true,
