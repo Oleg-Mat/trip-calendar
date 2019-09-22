@@ -47,7 +47,7 @@ export default {
   methods: {},
   mounted() {
     this.$store.dispatch('isLogin');
-    this.$store.dispatch('getFriendInfo');
+    this.$store.dispatch('getFriendInfo',this.user._id);
   },
 };
 </script>

@@ -78,8 +78,7 @@ export default new Vuex.Store({
         timeline.sort((a, b) => a.dateStart - b.dateStart);
         console.log(timeline);
         context.commit('setTimeline', timeline);
-        router.push(`/userPage/${this.$store.state.user._id}`);
-        
+        // router.push(`/userPage/${context.state.user._id}`);
       } catch (e) {
         console.log(e);
         // router.replace('/');

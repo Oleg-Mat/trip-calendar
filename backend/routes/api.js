@@ -48,7 +48,7 @@ router.get('/logged', auth, async (req, res) => {
 // строчка чтоб обновить токены
 // { accessType: 'offline', prompt: 'consent' }
 
-router.get('/login', passport.authenticate('google'));
+router.get('/login', passport.authenticate('google', { accessType: 'offline', prompt: 'consent' }));
 
 router.get('/logout', auth, async (req, res) => {
   req.session.destroy();
@@ -67,10 +67,10 @@ router.get('/timeline/:_id', auth, async (req, res) => {
   res.json(user);
 });
 router.get('/timelineonperiod', async (req, res) => {
-  let { dateStart: InputStart, dateEnd: InputEnd, place: InputPlace } = req.query;
+  const { dateStart, dateEnd, place: InputPlace } = req.query;
 
-  InputEnd = new Date(InputEnd);
-  InputStart = new Date(Date.parse(InputStart));
+  const InputEnd = new Date(+dateEnd);
+  const InputStart = new Date(+dateStart);
 
   const usersWithTimeline = await Timeline.find({
     $and: [

@@ -1,4 +1,4 @@
-require('./workers/Worker.js')
+require('./workers/Worker.js');
 const express = require('express');
 const db = require('mongoose');
 const morgan = require('morgan');
@@ -78,12 +78,14 @@ passport.serializeUser(serializeUser);
 
 // used to deserialize the user
 passport.deserializeUser(deserializeUser);
-db.connect('mongodb+srv://root:z1qx2wc3e@cluster0-ser1y.mongodb.net/nomadapp?retryWrites=true&w=majority', {
-  useNewUrlParser: true,
-});
+db.connect(
+  `mongodb+srv://${process.env.dbUser}:${process.env.dbPassword}@cluster0-ser1y.mongodb.net/nomadapp?retryWrites=true&w=majority`,
+  {
+    useNewUrlParser: true,
+  },
+);
 app.use('/api', apiRouter);
 app.listen(3000, () => {
   console.log('Server is running on port 3000!');
   console.log(`${__dirname}`);
-  
 });

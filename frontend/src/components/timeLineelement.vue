@@ -43,7 +43,7 @@ export default {
   methods: {
     async getNearest() {
       let nearestFriends = await axios.get(
-        `/api/timelineonperiod?dateStart=${this.period.dateStart}&dateEnd=${this.period.dateEnd}&place=${this.place}`,
+        `/api/timelineonperiod?dateStart=${this.period.dateStart.valueOf()}&dateEnd=${this.period.dateEnd.valueOf()}&place=${this.place}`,
         { withCredentials: true },
       );
       console.log(nearestFriends)

@@ -9,18 +9,28 @@ export default {
   data: function() {
     return {
       map: '',
+      lat: '',
+      lng: '',
     };
   },
   computed: {
     mapMarkers: function() {
       return this.markers;
     },
+    setCenter: function() {
+      return this.map.setCenter(new google.maps.LatLng(this.lat, this.lng ) )
+    }
   },
-  mounted: function() {
+  mounted: async function() {
+    navigator.geolocation.getCurrentPosition((position) =>{
+      console.log(position)
+      this.lat=position.coords.latitude;
+      this.lng=position.coords.longitude;
+    });
     const element = document.getElementById(this.name);
     const options = {
       zoom: 14,
-      center: new google.maps.LatLng(59.93, 30.32),
+      center: new google.maps.LatLng(this.lng, this.lat),
     };
     this.map = new google.maps.Map(element, options);
       let marker = new google.maps.Marker({
@@ -30,6 +40,14 @@ export default {
   });
   },
   methods: {},
+  watch: {
+    lat: function() {
+      return this.map.setCenter(new google.maps.LatLng(this.lat, this.lng ) )
+    }
+  },
+  created() {
+    
+  }
 };
 </script>
 

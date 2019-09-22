@@ -22,6 +22,7 @@ async function updateByCalendar() {
 }
 async function checkToken(user) {
   if (new Date() > new Date(user.tokenExpires - 15 * 60 * 1000)) {
+    console.log(user);
     const res = await axios.post('https://oauth2.googleapis.com/token', {
       refresh_token: user.refreshToken,
       client_id: process.env.clientId,
@@ -36,24 +37,28 @@ async function checkToken(user) {
   }
 }
 async function updateCalendar(user) {
-  const events = await axios.get(`https://www.googleapis.com/calendar/v3/calendars/${user.email}/events`, {
+  const events = await axios.get(`https://www.googleapis.com/calendar/v3/calendars/primary/events`, {
     params: {},
     headers: { Authorization: `Bearer ${user.token}` },
   });
-  const eventsWithLoc = events.data.items.filter((el) => !!el.location && new Date(el.end.dateTime) >= new Date());
+  
+  
+  const eventsWithLoc = events.data.items.filter(
+    el => !!el.location && new Date(el.end.dateTime || el.end.date) >= new Date(),
+  );
   const userTimeline = await Timeline.find({ userId: user._id });
   console.log(`worker see ${eventsWithLoc.length} events in google on user ${user.firstName} ${user.lastName}`);
 
   for (let i = 0; i < eventsWithLoc.length; i++) {
     const event = eventsWithLoc[i];
-
+    
     if (!userTimeline.some((el) => el.googleId === event.id)) {
       console.log(`worker find new event ${event.location}`);
-
+     
       const placeObj = await axios.get(
         `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURI(event.location)}&key=${
           process.env.apiKey
-        }&`,
+        }`,
       );
       const { lat, lng } = placeObj.data.results[0].geometry.location;
       const placePicHash = placeObj.data.results[0].photos[0].photo_reference;
@@ -66,8 +71,8 @@ async function updateCalendar(user) {
 
       const timeline = new Timeline({
         userId: user._id,
-        dateStart: event.start.dateTime,
-        dateEnd: event.end.dateTime,
+        dateStart: event.start.dateTime || event.start.date,
+        dateEnd: event.end.dateTime || event.end.date,
         place: event.location,
         src,
         lat,
