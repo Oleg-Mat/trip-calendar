@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'google-map',
   props: ['name'],
@@ -11,12 +12,10 @@ export default {
       map: '',
       lat: '',
       lng: '',
+      markers:'',
     };
   },
   computed: {
-    mapMarkers: function() {
-      return this.markers;
-    },
     setCenter: function() {
       return this.map.setCenter(new google.maps.LatLng(this.lat, this.lng ) )
     }
@@ -33,6 +32,28 @@ export default {
       center: new google.maps.LatLng(this.lng, this.lat),
     };
     this.map = new google.maps.Map(element, options);
+      let markers= (await axios.get('/api/todaylocation')).data;
+      console.log(markers);
+      
+      this.markers=markers;
+     const markersArr=this.markers.map(marker=>{
+       const latRand=0.02*Math.random()
+       const lngRand=0.02*Math.random()
+       const infowindow = new google.maps.InfoWindow({
+          content: marker.userId.fullName
+        });
+       const newMarker= new google.maps.Marker({
+            position: {lat:+marker.lat+latRand,lng:+marker.lng+lngRand},
+            icon:{url:marker.userId.photo, scaledSize: new google.maps.Size(30, 30)},
+          })
+        newMarker.addListener('click', function() {
+          infowindow.open(this.map, newMarker);
+        });
+        return newMarker
+          })
+      const markerCluster = new MarkerClusterer(this.map,markersArr,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+      
       let marker = new google.maps.Marker({
       position: {lat: 41.3850639, lng: 2.1734035} ,
       map: this.map,

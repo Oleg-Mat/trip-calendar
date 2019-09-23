@@ -22,7 +22,6 @@ async function updateByCalendar() {
 }
 async function checkToken(user) {
   if (new Date() > new Date(user.tokenExpires - 15 * 60 * 1000)) {
-    console.log(user);
     const res = await axios.post('https://oauth2.googleapis.com/token', {
       refresh_token: user.refreshToken,
       client_id: process.env.clientId,
